@@ -1,3 +1,3 @@
-# GeometricDeepLearning
+# Lab Work 10: Higher order PLS for multiway data
 
-Project with student reports on the Geometric Deep Learning course
+Accelerometer under various conditions to predict gyro data
