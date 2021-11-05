@@ -80,8 +80,9 @@ x_{p, t, c} = \sin(\omega_{p, t, c} (t / T) + \varphi_{p,t, c}), \quad \omega_{p
 \end{equation}
 Tensor $\underline{\mathbf{Y}}$ was generated as:
 \begin{equation}
-y_{p,t,c} = x_{p,t,c'}w_{c', c}, \quad\mathbf{W} \in \mathbb{R}^{C\times C}, ~w_{c', c}\sim \mathcal{U}(0, 1).
+y_{p,t,c} = x_{p,t,c'}w_{c', c} + \varepsilon_{p,t,c},
 \end{equation}
+where $\mathbf{W} \in \mathbb{R}^{C\times C}, ~w_{c', c}\sim \mathcal{U}(0, 1), ~\varepsilon_{p,t,c}\sim \mathcal{N}(0, 0.01)$.
 
 
 The task is to predict $\underline{\mathbf{Y}}$ by $\underline{\mathbf{X}}$, using method described above. Define a similarity between real $\underline{\mathbf{Y}}$ and $\underline{\mathbf{Y}}^\text{pred}$ as $Q^2$:
