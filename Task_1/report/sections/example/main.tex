@@ -72,38 +72,45 @@ where matrices $\mathbf{W}$ and $\mathbf{Q}$ have $R$ columns, which are the fol
 
 The implementation of HOPLS was taken from GitHub repository\footnote{https://github.com/arthurdehgan/HOPLS}. The computational experiment can be found on GitHub repository\footnote{https://github.com/Konstantin-Iakovlev/MathMethodsOfForecasting}.
 
-\subsection{Experiment}
+\subsection{Experiment on synthetic dataset}
 
-Consider an accelerometer tensor $\underline{\mathbf{X}}\in \mathbb{R}^{P\times T \times C}$, where $P = 51$ is a number of multivariate time series, $T = 40$ is a number of time steps, $C = 3$ is the number of channels. The task in to predict gyroscope data $\underline{\mathbf{Y}} \in \mathbb{R}^{P\times T \times C}$. We also assume that the data was measured simultaneously. 
+Consider an accelerometer tensor $\underline{\mathbf{X}}\in \mathbb{R}^{P\times T \times C}$, where $P = 10$ is a number of multivariate time series, $T = 40$ is a number of time steps, $C = 10$ is the number of channels. The task is to predict gyroscope data $\underline{\mathbf{Y}} \in \mathbb{R}^{P\times T \times C}$. Tensor $\underline{\mathbf{X}}$ was generated as:
+\begin{equation}
+x_{p, t, c} = \sin(\omega_{p, t, c} (t / T) + \varphi_{p,t, c}), \quad \omega_{p, t, c} \sim \mathcal{U}(20, 30), \quad \varphi_{p, t, c} \sim \mathcal{U}(0, \pi).
+\end{equation}
+Tensor $\underline{\mathbf{Y}}$ was generated as:
+\begin{equation}
+y_{p,t,c} = x_{p,t,c'}w_{c', c}, \quad\mathbf{W} \in \mathbb{R}^{C\times C}, ~w_{c', c}\sim \mathcal{U}(0, 1).
+\end{equation}
 
-The raw multivariate time series were preprocessed. They were normalized and smoothed. We took average value in window of length 30.
 
-The task is to predict $\underline{\mathbf{Y}}$ by $\underline{\mathbf{X}}$, using method described above. This task can be regarded as a regression problem. Define a similarity between real $\underline{\mathbf{Y}}$ and $\underline{\mathbf{Y}}^\text{pred}$ as $Q^2$:
+The task is to predict $\underline{\mathbf{Y}}$ by $\underline{\mathbf{X}}$, using method described above. Define a similarity between real $\underline{\mathbf{Y}}$ and $\underline{\mathbf{Y}}^\text{pred}$ as $Q^2$:
 \begin{equation}
 Q^2 = 1 - \frac{\|\underline{\mathbf{Y}}^\text{pred} - \underline{\mathbf{Y}}\|_F^2}{\|\underline{\mathbf{Y}}\|_F^2}.
 \end{equation}
 
-In order to measure quality of proposed method we performed cross validation. Here we split accelerometer data $\underline{\mathbf{X}}$ by the first dimension on 5 folds.
+In order to measure quality of proposed method we performed cross validation. Here we split accelerometer data $\underline{\mathbf{X}}$ by the first dimension on 5 folds. In our model $L_2 = K_2 = 6, ~L_3 = K_3 =1$.
 
-The computational experiment is  divided into two parts. The goal of the first part is to obtain a dependence of $Q^2$ on the number of latent vectors $R$. The goal of the second part is to obtain a dependence of quality on the standard deviation of normal noise $\sigma$ added to $\underline{\mathbf{X}}$. 
+The goal of the computational experiment is to get dependence of validation quality on number of latent vectors $R$. We also compare proposed method with N-PLS. In fact, HOPLS can be simplified to N-PLS if we define all $L_n = 1$ and $K_m = 1$. 
 
+\begin{table}
+\caption{Dependence of $Q^2$ on $R$ on validation dataset}
+\label{table}
+\begin{tabular}{c|c|c|c|c|c|c|c|}
+Method & $R= 1$ & $R= 4$ & $R = 10$ & $R = 13$ & $R = 16$ & $R = 19$\\ \hline
+HOPLS  &0.41 $\pm$ 0.12 & 0.51 $\pm$ 0.19&  0.41 $\pm$ 0.12& 0.04 $\pm$ 0.47 & -0.22 $\pm$ 0.68&  -0.32 $\pm$ 0.68 \\
+N-PLS & 0.42 $\pm$ 0.15 & 0.45 $\pm$ 0.11 & 0.35 $\pm$ 0.18 & 0.35 $\pm$ 0.19 & 0.33 $\pm$ 0.20 & 0.30 $\pm$ 0.20    
+\end{tabular}
+\end{table}
+
+From Table \ref{table} it can be seen that HOPLS method gives better solution in terms of $Q^2$. In addition, variance of both methods is comparable.
+
+From Figure \ref{fig:exp_1} it can be seen that the optimal $R^* = 4$. Moreover, the higher $R$ is, the more the variance of $Q^2$ is.
 \begin{figure}[h!]
 \centering
 \includegraphics[width=1\textwidth]{figures/cross_val}
 \caption{Dependence of $Q^2$ on number of latent vectors $R$.}
 \label{fig:exp_1}
-\end{figure}
-
-From Fig. \ref{fig:exp_1} it can be seen that optimal number of latent vectors is $R^* = 1$. When $R > R^*$ overfitting is observed. In addition, variance of $Q^2$ on train data remains constant, while variance of $Q^2$ on validation data is increasing.
-
-Fig. \ref{fig:exp_2} shows that a noise added to the whole accelerometer data do not affect on the variance of $Q^2$. This means that the proposed algorithm is robust. 
-
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width=1\textwidth]{figures/robustness}
-\caption{Dependence of $Q^2$ on standard deviation of noise $\sigma$.}
-\label{fig:exp_2}
 \end{figure}
 
 %\begin{figure}[h!]

@@ -38,26 +38,26 @@ plt.savefig('report/sections/example/figures/cross_val.png')
 plt.show()
 
 # robustness
-plt.figure(figsize=(12, 8))
-with open('robustness.json', 'r') as inp:
-    data = json.load(inp)
+# plt.figure(figsize=(12, 8))
+# with open('robustness.json', 'r') as inp:
+    # data = json.load(inp)
 
-sigmas = list(data.keys())
-mean_train = np.array([np.mean(data[sigma][0]) for sigma in data])
-mean_valid = np.array([np.mean(data[sigma][1]) for sigma in data])
-std_train = np.array([np.std(data[sigma][0]) for sigma in data])
-std_valid = np.array([np.std(data[sigma][1]) for sigma in data])
-plt.plot(list(data.keys()), mean_train, label='train')
-plt.fill_between(sigmas, mean_train - std_train, mean_train + std_train,
-        alpha=0.4)
-plt.plot(sigmas, mean_valid, label='valid')
-plt.fill_between(sigmas, mean_valid - std_valid, mean_valid + std_valid,
-        alpha=0.4)
-plt.xlabel(r'$\sigma$')
-plt.ylabel(r'$Q^2$')
-plt.legend()
-plt.savefig('report/sections/example/figures/robustness.png')
-plt.show()
+# sigmas = list(data.keys())
+# mean_train = np.array([np.mean(data[sigma][0]) for sigma in data])
+# mean_valid = np.array([np.mean(data[sigma][1]) for sigma in data])
+# std_train = np.array([np.std(data[sigma][0]) for sigma in data])
+# std_valid = np.array([np.std(data[sigma][1]) for sigma in data])
+# plt.plot(list(data.keys()), mean_train, label='train')
+# plt.fill_between(sigmas, mean_train - std_train, mean_train + std_train,
+        # alpha=0.4)
+# plt.plot(sigmas, mean_valid, label='valid')
+# plt.fill_between(sigmas, mean_valid - std_valid, mean_valid + std_valid,
+        # alpha=0.4)
+# plt.xlabel(r'$\sigma$')
+# plt.ylabel(r'$Q^2$')
+# plt.legend()
+# plt.savefig('report/sections/example/figures/robustness.png')
+# plt.show()
 
 
 
