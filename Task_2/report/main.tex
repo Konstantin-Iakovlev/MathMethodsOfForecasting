@@ -1,0 +1,46 @@
+\documentclass[a4paper,14pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[toc,page]{appendix}
+
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\numberwithin{equation}{section}
+
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\usepackage[
+backend=bibtex,
+style=numeric,
+sorting=ynt
+]{biblatex}
+\addbibresource{main.bib}
+
+\usepackage{subfiles} % Best loaded last in the preamble
+
+\title{Mathematical Methods of Forecasting}
+\date{}
+\author{Yakovlev Konstantin}
+
+\begin{document}
+
+    \maketitle
+    \tableofcontents
+    
+    % Example chapter
+    \clearpage
+    \section{Lab work 6} % Report title
+    \subfile{sections/example/main}{} % Path to created report 
+    
+    % Other chapters
+
+    % Bibliography
+    \clearpage
+    \printbibliography
+\end{document}
+
